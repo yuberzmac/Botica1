@@ -1,114 +1,170 @@
 # Botica Nova Salud
 
-Proyecto de gestión de inventario y ventas para la botica Nova Salud, desarrollado con arquitectura desacoplada: frontend en React y backend en Node.js + Express.
+> Aplicación web de gestión de inventario y ventas para la botica Nova Salud.
+
+---
+
+## 📌 Índice
+
+- [Descripción](#descripción)
+- [Tecnologías](#tecnologías)
+- [Características](#características)
+- [Estructura del proyecto](#estructura-del-proyecto)
+- [Instalación y ejecución](#instalación-y-ejecución)
+- [Variables de entorno](#variables-de-entorno)
+- [Rutas principales de la API](#rutas-principales-de-la-api)
+- [Estado actual](#estado-actual)
+- [Notas importantes](#notas-importantes)
+
+---
 
 ## 📌 Descripción
 
-Esta aplicación permite administrar productos, controlar stock, registrar ventas, generar alertas de bajo stock y productos próximos a vencer, y gestionar usuarios con roles de `admin` y `vendedor`.
+Botica Nova Salud es un sistema web desarrollado con frontend en React y backend en Node.js + Express. Permite:
 
-## 🧱 Estructura del proyecto
+- Registrar y autenticar usuarios
+- Gestionar productos y stock
+- Registrar ventas y descontar inventario automáticamente
+- Visualizar alertas de bajo stock y vencimientos
+- Controlar accesos según rol (`admin` / `vendedor`)
 
-- `backend/`: servidor Node.js con Express, conexión a MySQL, autenticación y API REST.
-- `frontend/`: aplicación React + Vite que consume la API del backend.
+---
 
-## 🚀 Tecnologías principales
+## 🚀 Tecnologías
 
-- Backend: Node.js, Express, MySQL, bcryptjs, jsonwebtoken, google-auth-library
-- Frontend: React, Vite, Tailwind CSS, React Router, Axios, Google OAuth
+| Frontend | Backend |
+| --- | --- |
+| React | Node.js
+| Vite | Express
+| Tailwind CSS | MySQL
+| React Router | bcryptjs
+| Axios | jsonwebtoken
+| @react-oauth/google | google-auth-library
 
-## ✅ Características implementadas
+---
 
-- Inicio de sesión y registro de usuarios
-- Inicio de sesión con Google
-- Control de roles: `admin` y `vendedor`
-- Gestión de productos (CRUD)
-- Registro de ventas con descuento automático de stock
+## ✅ Características
+
+- Login + registro de usuario
+- Login con Google
+- Roles de usuario (`admin`, `vendedor`)
+- CRUD de productos
+- Registro de ventas con cálculo automático del total
+- Descuento automático de stock en ventas
 - Historial de ventas
-- Alertas de bajo stock y productos próximos a vencer
-- Dashboard con métricas básicas
-- Protección de rutas con token JWT
+- Alertas de bajo stock
+- Alertas de productos próximos a vencer
+- Dashboard con métricas principales
+- Rutas protegidas con JWT
 
-## 📁 Estructura de carpetas
+---
 
-- `backend/src/app.js`: servidor principal y configuración de rutas
-- `backend/src/controllers/`: lógica de controladores para auth, productos, ventas y alertas
-- `backend/src/routes/`: rutas de la API
-- `backend/src/middlewares/`: middleware de autenticación y roles
-- `frontend/src/`: código fuente del cliente React
-- `frontend/src/pages/`: vistas principales del sistema
-- `frontend/src/components/`: componentes compartidos como la barra de navegación
-- `frontend/src/services/api.js`: configuración de Axios
+## 📁 Estructura del proyecto
 
-## ⚙️ Configuración local
+### Backend
 
-### 1. Backend
+- `backend/src/app.js` - servidor y rutas principales
+- `backend/src/controllers/` - lógica de negocio
+- `backend/src/routes/` - rutas de API
+- `backend/src/middlewares/` - autenticación y control de roles
+- `backend/src/config/db.js` - configuración de conexión con MySQL
 
-1. Abrir terminal en `backend/`
-2. Instalar dependencias:
-   ```bash
-   npm install
-   ```
-3. Crear archivo `.env` en `backend/` con estas variables:
-   ```env
-   PORT=3000
-   DB_HOST=<tu_host_mysql>
-   DB_PORT=3306
-   DB_USER=<tu_usuario_mysql>
-   DB_PASSWORD=<tu_contraseña_mysql>
-   DB_NAME=Botica1
-   JWT_SECRET=<una_clave_secreta>
-   GOOGLE_CLIENT_ID=<tu_cliente_id_de_google>
-   ```
-4. Iniciar el backend:
-   ```bash
-   npm start
-   ```
+### Frontend
 
-### 2. Frontend
+- `frontend/src/App.jsx` - enrutamiento principal
+- `frontend/src/pages/` - vistas: login, registro, productos, ventas, alertas, dashboard
+- `frontend/src/components/` - componentes compartidos
+- `frontend/src/services/api.js` - configuración de Axios y autorización
 
-1. Abrir terminal en `frontend/`
-2. Instalar dependencias:
-   ```bash
-   npm install
-   ```
-3. Iniciar el frontend:
-   ```bash
-   npm run dev
-   ```
+---
 
-El frontend corre por defecto en `http://localhost:5173` y se conecta al backend en `http://localhost:3000`.
+## ⚙️ Instalación y ejecución
 
-## 🔐 Variables de entorno necesarias
+### Backend
 
-- `DB_HOST`: servidor MySQL
-- `DB_PORT`: puerto MySQL (normalmente `3306`)
-- `DB_USER`: usuario MySQL
-- `DB_PASSWORD`: contraseña MySQL
-- `DB_NAME`: nombre de la base de datos
-- `JWT_SECRET`: clave para firmar tokens JWT
-- `GOOGLE_CLIENT_ID`: Client ID de Google OAuth para login con Google
+```bash
+cd backend
+npm install
+```
 
-## 🧪 Comandos útiles
+Crear un archivo `.env` en `backend/` con estas variables:
 
-- Backend:
-  - `npm start`: inicia el servidor
-- Frontend:
-  - `npm run dev`: inicia la app en modo desarrollo
-  - `npm run build`: construye la app para producción
-  - `npm run preview`: prueba la versión de producción
+```env
+PORT=3000
+DB_HOST=<tu_host_mysql>
+DB_PORT=3306
+DB_USER=<tu_usuario_mysql>
+DB_PASSWORD=<tu_contraseña_mysql>
+DB_NAME=Botica1
+JWT_SECRET=<una_clave_secreta>
+GOOGLE_CLIENT_ID=<tu_cliente_id_de_google>
+```
 
-## 📌 Notas adicionales
+Iniciar backend:
 
-- No subas el archivo `.env` ni credenciales privadas al repositorio.
-- Ya se agregó un `.gitignore` para excluir `node_modules/`, `.env` y archivos sensibles.
-- El proyecto ya está conectado al repositorio remoto en GitHub.
+```bash
+npm start
+```
 
-## 📍 Estado actual del proyecto
+### Frontend
 
-- Funcionalidad principal implementada
-- Autenticación y roles listos
-- Gestión de productos, ventas y alertas operativa
-- Quedan mejoras opcionales como búsqueda avanzada y edición más completa de inventario
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+El frontend se ejecuta en `http://localhost:5173` y usa la API en `http://localhost:3000`.
+
+---
+
+## 🔐 Variables de entorno
+
+- `DB_HOST`: Host de la base de datos MySQL
+- `DB_PORT`: Puerto de MySQL (`3306`)
+- `DB_USER`: Usuario MySQL
+- `DB_PASSWORD`: Contraseña MySQL
+- `DB_NAME`: Nombre de la base de datos
+- `JWT_SECRET`: Clave para tokens JWT
+- `GOOGLE_CLIENT_ID`: ID de cliente de Google OAuth
+
+---
+
+## 🧭 Rutas principales de la API
+
+| Método | Ruta | Descripción |
+| --- | --- | --- |
+| `POST` | `/auth/register` | Registrar usuario |
+| `POST` | `/auth/login` | Login con correo y contraseña |
+| `POST` | `/auth/google-login` | Login con Google |
+| `GET` | `/productos` | Listar productos |
+| `GET` | `/productos/:id` | Obtener producto por ID |
+| `POST` | `/productos` | Crear producto |
+| `PUT` | `/productos/:id` | Actualizar producto |
+| `DELETE` | `/productos/:id` | Eliminar producto |
+| `POST` | `/ventas` | Registrar venta |
+| `GET` | `/ventas` | Listar ventas |
+| `GET` | `/alertas` | Obtener alertas de inventario |
+
+---
+
+## 📍 Estado actual
+
+- ✅ Backend funcional
+- ✅ Frontend funcional
+- ✅ Autenticación y roles implementados
+- ✅ Gestión de inventario y ventas operativa
+- ✅ Alertas y dashboard disponibles
+
+---
+
+## 📌 Notas importantes
+
+- No subas el archivo `.env` al repositorio.
+- Se excluyen `node_modules/` y archivos sensibles en `.gitignore`.
+- El repositorio remoto ya está configurado en GitHub.
+
+---
 
 ## 📎 Repositorio
 
