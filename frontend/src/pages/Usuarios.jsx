@@ -124,11 +124,14 @@ const Usuarios = () => {
                       className="w-full border rounded px-2 py-1"
                     >
                       <option value="cliente">Cliente</option>
+                      <option value="vendedor">Vendedor</option>
                       <option value="admin">Admin</option>
                     </select>
                   ) : (
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      u.rol === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
+                      u.rol === 'admin' ? 'bg-purple-100 text-purple-800' :
+                      u.rol === 'vendedor' ? 'bg-green-100 text-green-800' :
+                      'bg-blue-100 text-blue-800'
                     }`}>
                       {u.rol}
                     </span>

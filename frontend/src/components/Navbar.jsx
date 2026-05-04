@@ -14,6 +14,7 @@ const Navbar = () => {
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const isAdmin = user.rol === 'admin';
+  const isSeller = user.rol === 'vendedor';
 
   const navLinks = [];
 
@@ -24,6 +25,13 @@ const Navbar = () => {
       { name: 'Ventas', path: '/ventas', icon: ShoppingCart },
       { name: 'Alertas', path: '/alertas', icon: AlertTriangle },
       { name: 'Usuarios', path: '/usuarios', icon: Users }
+    );
+  } else if (isSeller) {
+    navLinks.push(
+      { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
+      { name: 'Productos', path: '/productos', icon: Package },
+      { name: 'Punto de Venta', path: '/ventas', icon: ShoppingCart },
+      { name: 'Alertas', path: '/alertas', icon: AlertTriangle }
     );
   } else {
     // Solo clientes pueden acceder a ventas para comprar

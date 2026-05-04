@@ -32,6 +32,14 @@ const RequireAdmin = ({ children }) => {
   return children;
 };
 
+const RequireSellerOrAdmin = ({ children }) => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  if (user.rol !== 'admin' && user.rol !== 'vendedor') {
+    return <Navigate to="/ventas" replace />;
+  }
+  return children;
+};
+
 function App() {
   return (
     <BrowserRouter>
@@ -43,20 +51,20 @@ function App() {
         <Route element={<ProtectedLayout />}>
           <Route path="/" element={<Navigate to="/ventas" replace />} />
           <Route path="/dashboard" element={
-            <RequireAdmin>
+            <RequireSellerOrAdmin>
               <Dashboard />
-            </RequireAdmin>
+            </RequireSellerOrAdmin>
           } />
           <Route path="/productos" element={
-            <RequireAdmin>
+            <RequireSellerOrAdmin>
               <Productos />
-            </RequireAdmin>
+            </RequireSellerOrAdmin>
           } />
           <Route path="/ventas" element={<Ventas />} />
           <Route path="/alertas" element={
-            <RequireAdmin>
+            <RequireSellerOrAdmin>
               <Alertas />
-            </RequireAdmin>
+            </RequireSellerOrAdmin>
           } />
           <Route path="/usuarios" element={
             <RequireAdmin>

@@ -3,26 +3,30 @@ require('dotenv').config();
 
 async function fixDatabase() {
   try {
-    console.log('🔧 Intentando agregar columna activo a la tabla productos...');
+    console.log('🔧 Verificando columnas en la base de datos...');
     
-    // Agregar columna activo si no existe
-    await db.query(`
-      ALTER TABLE productos 
-      ADD COLUMN activo BOOLEAN DEFAULT TRUE
-    `);
+    const addColumn = async (table, columnDef) => {
+      try {
+        await db.query(`ALTER TABLE ${table} ADD COLUMN ${columnDef}`);
+        console.log(`✅ Columna agregada: ${columnDef} en ${table}`);
+      } catch (error) {
+        if (error.code === 'ER_DUP_FIELDNAME') {
+          console.log(`ℹ️ La columna ya existe: ${columnDef.split(' ')[0]} en ${table}`);
+        } else {
+          throw error;
+        }
+      }
+    };
+
+    await addColumn('productos', 'activo BOOLEAN DEFAULT TRUE');
+    await addColumn('ventas', 'vendedor_id INT DEFAULT NULL');
+    await addColumn('ventas', 'cliente_id INT DEFAULT NULL');
     
-    console.log('✅ Columna activo agregada exitosamente');
+    console.log('🎉 Base de datos lista');
     process.exit(0);
   } catch (error) {
-    // Si la columna ya existe, ese error es normal
-    if (error.code === 'ER_DUP_FIELDNAME') {
-      console.log('ℹ️ La columna activo ya existe en la tabla productos');
-      process.exit(0);
-    } else {
-      console.error('❌ Error al actualizar la base de datos:', error.message);
-      console.log('📋 Código de error:', error.code);
-      process.exit(1);
-    }
+    console.error('❌ Error al actualizar la base de datos:', error.message);
+    process.exit(1);
   }
 }
 
