@@ -14,7 +14,7 @@ CREATE TABLE usuarios (
   correo VARCHAR(100) NOT NULL UNIQUE,
   telefono VARCHAR(20),
   password VARCHAR(255) NOT NULL,
-  rol_id INT NOT NULL DEFAULT 3,
+  rol_id INT NOT NULL DEFAULT 2,
   FOREIGN KEY (rol_id) REFERENCES roles(id)
 );
 
@@ -23,8 +23,7 @@ CREATE TABLE productos (
   nombre VARCHAR(100) NOT NULL,
   stock INT NOT NULL DEFAULT 0,
   precio DECIMAL(10,2) NOT NULL,
-  fecha_vencimiento DATE,
-  activo BOOLEAN DEFAULT TRUE
+  fecha_vencimiento DATE
 );
 
 CREATE TABLE ventas (
@@ -37,7 +36,7 @@ CREATE TABLE ventas (
 );
 
 -- Insertar roles por defecto
-INSERT INTO roles (nombre) VALUES ('admin'), ('vendedor'), ('cliente');
+INSERT INTO roles (nombre) VALUES ('admin'), ('vendedor');
 
 -- Insertar un usuario administrador por defecto (password es admin123)
 -- La contraseña está encriptada con bcrypt
