@@ -1,0 +1,25 @@
+# Node modules
+node_modules/
+
+# Environment files
+.env
+*.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories
+.vscode/
+.idea/
+
+# Build folders
+dist/
+build/
+
+# Ignore backend secrets
+backend/client_secret_*.json
+
+# Ignore OS files
+.DS_Store
