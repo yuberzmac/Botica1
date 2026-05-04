@@ -6,6 +6,7 @@ const Ventas = () => {
   const [productos, setProductos] = useState([]);
   const [ventas, setVentas] = useState([]);
   const [form, setForm] = useState({ producto_id: '', cantidad: 1 });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -26,6 +27,9 @@ const Ventas = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
     try {
       await api.post('/ventas', form);
       alert('Venta registrada con éxito. ¡Stock descontado!');
@@ -33,6 +37,8 @@ const Ventas = () => {
       fetchData();
     } catch (error) {
       alert(error.response?.data?.message || 'Error al registrar venta');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -70,8 +76,12 @@ const Ventas = () => {
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" 
             />
           </div>
-          <button type="submit" className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 flex items-center gap-2 h-[42px]">
-            <ShoppingCart size={18} /> Vender
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`bg-green-600 text-white px-6 py-2 rounded-md flex items-center gap-2 h-[42px] transition-colors ${isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-green-700'}`}
+          >
+            <ShoppingCart size={18} /> {isSubmitting ? 'Registrando...' : 'Vender'}
           </button>
         </form>
       </div>
