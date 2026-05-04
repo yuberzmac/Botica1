@@ -36,11 +36,11 @@ exports.googleLogin = async (req, res) => {
     let user;
 
     if (users.length === 0) {
-      // User doesn't exist, create it with a random password and rol_id 2 (vendedor)
+      // User doesn't exist, create it with a random password and rol_id 3 (cliente)
       const randomPassword = await bcrypt.hash(Math.random().toString(36).slice(-8), 10);
       const [result] = await db.query(
         'INSERT INTO usuarios (nombre_completo, correo, password, rol_id) VALUES (?, ?, ?, ?)',
-        [name, email, randomPassword, 2]
+        [name, email, randomPassword, 3]
       );
       
       const [newUsers] = await db.query(query, [email]);
@@ -72,10 +72,10 @@ exports.register = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    // rol_id 2 es 'vendedor' por defecto
+    // rol_id 3 es 'cliente' por defecto
     const [result] = await db.query(
       'INSERT INTO usuarios (nombre_completo, correo, telefono, password, rol_id) VALUES (?, ?, ?, ?, ?)',
-      [nombre_completo, correo, telefono, hashedPassword, 2]
+      [nombre_completo, correo, telefono, hashedPassword, 3]
     );
     res.status(201).json({ message: 'Usuario registrado exitosamente' });
   } catch (error) {

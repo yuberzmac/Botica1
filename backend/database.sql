@@ -14,7 +14,7 @@ CREATE TABLE usuarios (
   correo VARCHAR(100) NOT NULL UNIQUE,
   telefono VARCHAR(20),
   password VARCHAR(255) NOT NULL,
-  rol_id INT NOT NULL DEFAULT 2,
+  rol_id INT NOT NULL DEFAULT 3,
   FOREIGN KEY (rol_id) REFERENCES roles(id)
 );
 
@@ -36,7 +36,7 @@ CREATE TABLE ventas (
 );
 
 -- Insertar roles por defecto
-INSERT INTO roles (nombre) VALUES ('admin'), ('vendedor');
+INSERT INTO roles (nombre) VALUES ('admin'), ('vendedor'), ('cliente');
 
 -- Insertar un usuario administrador por defecto (password es admin123)
 -- La contraseña está encriptada con bcrypt
