@@ -16,6 +16,13 @@ if (!JWT_SECRET) {
 
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
+const getRoleId = async (roleName) => {
+  const [rows] = await db.query('SELECT id FROM roles WHERE nombre = ?', [roleName]);
+  if (rows.length > 0) return rows[0].id;
+  const [result] = await db.query('INSERT INTO roles (nombre) VALUES (?)', [roleName]);
+  return result.insertId;
+};
+
 exports.googleLogin = async (req, res) => {
   const { credential } = req.body;
   try {
@@ -36,11 +43,12 @@ exports.googleLogin = async (req, res) => {
     let user;
 
     if (users.length === 0) {
-      // User doesn't exist, create it with a random password and rol_id 3 (cliente)
+      // User doesn't exist, create it with a random password and rol_id cliente
+      const clienteRoleId = await getRoleId('cliente');
       const randomPassword = await bcrypt.hash(Math.random().toString(36).slice(-8), 10);
       const [result] = await db.query(
         'INSERT INTO usuarios (nombre_completo, correo, password, rol_id) VALUES (?, ?, ?, ?)',
-        [name, email, randomPassword, 3]
+        [name, email, randomPassword, clienteRoleId]
       );
       
       const [newUsers] = await db.query(query, [email]);
@@ -72,10 +80,10 @@ exports.register = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    // rol_id 3 es 'cliente' por defecto
+    const clienteRoleId = await getRoleId('cliente');
     const [result] = await db.query(
       'INSERT INTO usuarios (nombre_completo, correo, telefono, password, rol_id) VALUES (?, ?, ?, ?, ?)',
-      [nombre_completo, correo, telefono, hashedPassword, 3]
+      [nombre_completo, correo, telefono, hashedPassword, clienteRoleId]
     );
     res.status(201).json({ message: 'Usuario registrado exitosamente' });
   } catch (error) {
