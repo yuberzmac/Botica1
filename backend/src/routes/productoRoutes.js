@@ -2,16 +2,17 @@ const express = require('express');
 const router = express.Router();
 const productoController = require('../controllers/productoController');
 const authMiddleware = require('../middlewares/authMiddleware');
-const { isAdmin } = require('../middlewares/roleMiddleware');
+const { canViewProducts, canManageProducts } = require('../middlewares/roleMiddleware');
 
-router.use(authMiddleware); // Todas las rutas de productos requieren autenticación
+router.use(authMiddleware); // Todas las rutas requieren autenticación
 
-router.get('/', productoController.getAll);
-router.get('/:id', productoController.getById);
+// Ver productos - todos los roles autenticados
+router.get('/', canViewProducts, productoController.getAll);
+router.get('/:id', canViewProducts, productoController.getById);
 
-// Solo el admin puede modificar el inventario
-router.post('/', isAdmin, productoController.create);
-router.put('/:id', isAdmin, productoController.update);
-router.delete('/:id', isAdmin, productoController.delete);
+// Gestionar productos - solo admin
+router.post('/', canManageProducts, productoController.create);
+router.put('/:id', canManageProducts, productoController.update);
+router.delete('/:id', canManageProducts, productoController.delete);
 
 module.exports = router;

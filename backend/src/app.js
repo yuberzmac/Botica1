@@ -13,6 +13,16 @@ app.use('/auth', require('./routes/authRoutes'));
 app.use('/productos', require('./routes/productoRoutes'));
 app.use('/ventas', require('./routes/ventaRoutes'));
 app.use('/alertas', require('./routes/alertaRoutes'));
+app.use('/usuarios', require('./routes/usuarioRoutes'));
+
+// Endpoint de debug para verificar autenticación
+app.get('/debug/auth', require('./middlewares/authMiddleware'), (req, res) => {
+  res.json({
+    message: 'Usuario autenticado correctamente',
+    user: req.user,
+    timestamp: new Date().toISOString()
+  });
+});
 
 // Ruta base
 app.get('/', (req, res) => {

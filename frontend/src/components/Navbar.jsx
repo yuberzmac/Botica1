@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Package, ShoppingCart, AlertTriangle, LogOut, LayoutDashboard } from 'lucide-react';
+import { Package, ShoppingCart, AlertTriangle, LogOut, LayoutDashboard, Users } from 'lucide-react';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -15,14 +15,19 @@ const Navbar = () => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const isAdmin = user.rol === 'admin';
 
-  const navLinks = [
-    { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-    { name: 'Productos', path: '/productos', icon: Package },
-    { name: 'Ventas', path: '/ventas', icon: ShoppingCart },
-  ];
+  const navLinks = [];
 
   if (isAdmin) {
-    navLinks.push({ name: 'Alertas', path: '/alertas', icon: AlertTriangle });
+    navLinks.push(
+      { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
+      { name: 'Productos', path: '/productos', icon: Package },
+      { name: 'Ventas', path: '/ventas', icon: ShoppingCart },
+      { name: 'Alertas', path: '/alertas', icon: AlertTriangle },
+      { name: 'Usuarios', path: '/usuarios', icon: Users }
+    );
+  } else {
+    // Solo clientes pueden acceder a ventas para comprar
+    navLinks.push({ name: 'Comprar', path: '/ventas', icon: ShoppingCart });
   }
 
   return (

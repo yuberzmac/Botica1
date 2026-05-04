@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import Productos from './pages/Productos';
 import Ventas from './pages/Ventas';
 import Alertas from './pages/Alertas';
+import Usuarios from './pages/Usuarios';
 
 const ProtectedLayout = () => {
   const token = localStorage.getItem('token');
@@ -26,7 +27,7 @@ const ProtectedLayout = () => {
 const RequireAdmin = ({ children }) => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   if (user.rol !== 'admin') {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/ventas" replace />;
   }
   return children;
 };
@@ -40,13 +41,26 @@ function App() {
         
         {/* Rutas protegidas */}
         <Route element={<ProtectedLayout />}>
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/productos" element={<Productos />} />
+          <Route path="/" element={<Navigate to="/ventas" replace />} />
+          <Route path="/dashboard" element={
+            <RequireAdmin>
+              <Dashboard />
+            </RequireAdmin>
+          } />
+          <Route path="/productos" element={
+            <RequireAdmin>
+              <Productos />
+            </RequireAdmin>
+          } />
           <Route path="/ventas" element={<Ventas />} />
           <Route path="/alertas" element={
             <RequireAdmin>
               <Alertas />
+            </RequireAdmin>
+          } />
+          <Route path="/usuarios" element={
+            <RequireAdmin>
+              <Usuarios />
             </RequireAdmin>
           } />
         </Route>

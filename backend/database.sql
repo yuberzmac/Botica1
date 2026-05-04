@@ -23,7 +23,8 @@ CREATE TABLE productos (
   nombre VARCHAR(100) NOT NULL,
   stock INT NOT NULL DEFAULT 0,
   precio DECIMAL(10,2) NOT NULL,
-  fecha_vencimiento DATE
+  fecha_vencimiento DATE,
+  activo BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE ventas (
